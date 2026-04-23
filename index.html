@@ -536,6 +536,165 @@
     color: var(--accent);
   }
 
+  /* PILLARS */
+  .pillars-section {
+    margin-bottom: 28px;
+  }
+
+  .pillars-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 720px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  .pillar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .pillar:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pillar.done {
+    background: var(--accent-soft);
+    border-color: transparent;
+  }
+
+  .pillar-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .pillar[data-type="health"] .pillar-icon {
+    background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+    color: #991b1b;
+  }
+
+  .pillar[data-type="mental"] .pillar-icon {
+    background: linear-gradient(135deg, #ddd6fe 0%, #a78bfa 100%);
+    color: #5b21b6;
+  }
+
+  .pillar[data-type="financial"] .pillar-icon {
+    background: linear-gradient(135deg, #bbf7d0 0%, #4ade80 100%);
+    color: #166534;
+  }
+
+  [data-theme="dark"] .pillar[data-type="health"] .pillar-icon {
+    background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);
+    color: #fecaca;
+  }
+
+  [data-theme="dark"] .pillar[data-type="mental"] .pillar-icon {
+    background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%);
+    color: #ddd6fe;
+  }
+
+  [data-theme="dark"] .pillar[data-type="financial"] .pillar-icon {
+    background: linear-gradient(135deg, #14532d 0%, #15803d 100%);
+    color: #bbf7d0;
+  }
+
+  .pillar-icon svg { width: 16px; height: 16px; }
+
+  .pillar-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pillar-name {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+
+  .pillar-goal {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text);
+    width: 100%;
+    padding: 0;
+  }
+
+  .pillar-goal::placeholder {
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .pillar.done .pillar-goal {
+    text-decoration: line-through;
+    color: var(--text-dim);
+  }
+
+  .pillar-check {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    background: var(--surface);
+  }
+
+  .pillar-check:hover {
+    border-color: var(--accent);
+  }
+
+  .pillar.done .pillar-check {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .pillar-check svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .pillar.done .pillar-check svg { opacity: 1; }
+
   /* ANIMATIONS */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-6px); }
@@ -571,6 +730,62 @@
       </svg>
     </button>
   </header>
+
+  <div class="pillars-section">
+    <div class="pillars-label">Daily pillars</div>
+    <div class="pillars">
+      <div class="pillar" data-type="health">
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-name">Health</div>
+          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="health">
+        </div>
+        <div class="pillar-check" data-check="health">
+          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="pillar" data-type="mental">
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-name">Mental</div>
+          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="mental">
+        </div>
+        <div class="pillar-check" data-check="mental">
+          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="pillar" data-type="financial">
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-name">Financial</div>
+          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="financial">
+        </div>
+        <div class="pillar-check" data-check="financial">
+          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="columns">
     <section class="column" data-person="jawad">
@@ -649,13 +864,13 @@
 
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {} };
+    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: { health: { goal: '', done: false }, mental: { goal: '', done: false }, financial: { goal: '', done: false } } };
     if (!raw) return fresh;
     const saved = JSON.parse(raw);
     if (saved.date !== today) {
       return { ...fresh, theme: saved.theme || 'light' };
     }
-    return { ...fresh, ...saved };
+    return { ...fresh, ...saved, pillars: { ...fresh.pillars, ...(saved.pillars || {}) } };
   }
 
   function saveState() {
@@ -821,11 +1036,43 @@
 
   document.getElementById('resetDay').addEventListener('click', () => {
     if (!confirm('Clear all tasks?')) return;
-    state = { date: today, jawad: [], ubay: [], theme: state.theme, pick: {} };
+    state = {
+      date: today, jawad: [], ubay: [], theme: state.theme, pick: {},
+      pillars: { health: { goal: '', done: false }, mental: { goal: '', done: false }, financial: { goal: '', done: false } }
+    };
     saveState();
+    renderPillars();
     render();
   });
 
+  // PILLARS
+  function renderPillars() {
+    ['health', 'mental', 'financial'].forEach(type => {
+      const p = state.pillars[type];
+      const card = document.querySelector(`.pillar[data-type="${type}"]`);
+      const input = document.querySelector(`[data-pillar="${type}"]`);
+      if (input.value !== p.goal) input.value = p.goal;
+      card.classList.toggle('done', p.done);
+    });
+  }
+
+  document.querySelectorAll('.pillar-goal').forEach(input => {
+    input.addEventListener('input', () => {
+      state.pillars[input.dataset.pillar].goal = input.value;
+      saveState();
+    });
+  });
+
+  document.querySelectorAll('.pillar-check').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.check;
+      state.pillars[type].done = !state.pillars[type].done;
+      saveState();
+      renderPillars();
+    });
+  });
+
+  renderPillars();
   render();
 </script>
 </body>
