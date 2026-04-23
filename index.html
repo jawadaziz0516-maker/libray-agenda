@@ -842,9 +842,15 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  const SUPABASE_URL = 'https://aptybxmtuiezllujhvov.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_DGon9mLLHkbl39ua6qUCIg_SQg5UEkB';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   const STORAGE_KEY = 'sdsu-library-agenda-v4';
   const today = new Date().toISOString().split('T')[0];
+  let applyingRemote = false;
 
   function freshPillars() {
     return {
@@ -867,6 +873,39 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (!applyingRemote) pushToRemote();
+  }
+
+  async function pushToRemote() {
+    const shared = { date: state.date, jawad: state.jawad, ubay: state.ubay, pillars: state.pillars };
+    const { error } = await sb.from('agenda_state').update({ data: shared, updated_at: new Date().toISOString() }).eq('id', 1);
+    if (error) console.warn('Supabase write failed', error);
+  }
+
+  async function pullFromRemote() {
+    const { data, error } = await sb.from('agenda_state').select('data').eq('id', 1).single();
+    if (error) { console.warn('Supabase read failed', error); return; }
+    const remote = data?.data;
+    if (!remote || !remote.date) { pushToRemote(); return; }
+    applyRemote(remote);
+  }
+
+  function applyRemote(remote) {
+    applyingRemote = true;
+    if (remote.date !== today) {
+      state = { ...state, date: today, jawad: [], ubay: [], pillars: freshPillars() };
+      applyingRemote = false;
+      pushToRemote();
+    } else {
+      state.date = remote.date;
+      state.jawad = remote.jawad || [];
+      state.ubay = remote.ubay || [];
+      state.pillars = { ...freshPillars(), ...(remote.pillars || {}) };
+      applyingRemote = false;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    renderPillars();
+    render();
   }
 
   let state = loadState();
@@ -1059,6 +1098,15 @@
 
   renderPillars();
   render();
+
+  // LIVE SYNC
+  pullFromRemote();
+
+  sb.channel('agenda_updates')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'agenda_state' }, payload => {
+      if (payload.new?.data) applyRemote(payload.new.data);
+    })
+    .subscribe();
 </script>
 </body>
 </html>
