@@ -701,7 +701,7 @@
       list.innerHTML = '';
 
       if (tasks.length === 0) {
-        list.innerHTML = '<div class="empty">Nothing here yet</div>';
+        list.innerHTML = '<div class="empty">Nothing planned yet</div>';
       } else {
         // sort: incomplete first, then by priority
         const sorted = [...tasks].map((t, i) => ({ ...t, _i: i })).sort((a, b) => {
