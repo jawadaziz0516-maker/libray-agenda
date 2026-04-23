@@ -578,11 +578,6 @@
     box-shadow: var(--shadow-sm);
   }
 
-  .pillar.done {
-    background: var(--accent-soft);
-    border-color: transparent;
-  }
-
   .pillar-icon {
     width: 34px;
     height: 34px;
@@ -640,60 +635,52 @@
     margin-bottom: 2px;
   }
 
-  .pillar-goal {
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: inherit;
+  .pillar-question {
     font-size: 0.92rem;
     font-weight: 500;
     color: var(--text);
-    width: 100%;
-    padding: 0;
   }
 
-  .pillar-goal::placeholder {
-    color: var(--text-dim);
-    font-weight: 400;
+  .pillar-checks {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
   }
 
-  .pillar.done .pillar-goal {
-    text-decoration: line-through;
-    color: var(--text-dim);
-  }
-
-  .pillar-check {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--border-strong);
+  .pillar-person-check {
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    background: var(--surface);
     cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: var(--text-dim);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    flex-shrink: 0;
-    background: var(--surface);
+    padding: 0;
   }
 
-  .pillar-check:hover {
-    border-color: var(--accent);
+  .pillar-person-check:hover {
+    border-color: var(--text-dim);
+    transform: scale(1.05);
   }
 
-  .pillar.done .pillar-check {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .pillar-check svg {
-    width: 12px;
-    height: 12px;
+  .pillar-person-check.j.checked {
+    background: #dc2626;
+    border-color: #dc2626;
     color: white;
-    opacity: 0;
-    transition: opacity 0.2s;
   }
 
-  .pillar.done .pillar-check svg { opacity: 1; }
+  .pillar-person-check.u.checked {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: white;
+  }
 
   /* ANIMATIONS */
   @keyframes fadeIn {
@@ -742,12 +729,11 @@
         </div>
         <div class="pillar-body">
           <div class="pillar-name">Health</div>
-          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="health">
+          <div class="pillar-question">Did you lift?</div>
         </div>
-        <div class="pillar-check" data-check="health">
-          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
+        <div class="pillar-checks">
+          <button class="pillar-person-check j" data-pillar="health" data-person="jawad" title="Jawad">J</button>
+          <button class="pillar-person-check u" data-pillar="health" data-person="ubay" title="Ubay">U</button>
         </div>
       </div>
 
@@ -759,12 +745,11 @@
         </div>
         <div class="pillar-body">
           <div class="pillar-name">Mental</div>
-          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="mental">
+          <div class="pillar-question">Did you read? (20+ min)</div>
         </div>
-        <div class="pillar-check" data-check="mental">
-          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
+        <div class="pillar-checks">
+          <button class="pillar-person-check j" data-pillar="mental" data-person="jawad" title="Jawad">J</button>
+          <button class="pillar-person-check u" data-pillar="mental" data-person="ubay" title="Ubay">U</button>
         </div>
       </div>
 
@@ -776,12 +761,11 @@
         </div>
         <div class="pillar-body">
           <div class="pillar-name">Financial</div>
-          <input type="text" class="pillar-goal" placeholder="Today's goal..." data-pillar="financial">
+          <div class="pillar-question">Stayed on budget?</div>
         </div>
-        <div class="pillar-check" data-check="financial">
-          <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
+        <div class="pillar-checks">
+          <button class="pillar-person-check j" data-pillar="financial" data-person="jawad" title="Jawad">J</button>
+          <button class="pillar-person-check u" data-pillar="financial" data-person="ubay" title="Ubay">U</button>
         </div>
       </div>
     </div>
@@ -859,12 +843,20 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'sdsu-library-agenda-v3';
+  const STORAGE_KEY = 'sdsu-library-agenda-v4';
   const today = new Date().toISOString().split('T')[0];
+
+  function freshPillars() {
+    return {
+      health: { jawad: false, ubay: false },
+      mental: { jawad: false, ubay: false },
+      financial: { jawad: false, ubay: false }
+    };
+  }
 
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: { health: { goal: '', done: false }, mental: { goal: '', done: false }, financial: { goal: '', done: false } } };
+    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars() };
     if (!raw) return fresh;
     const saved = JSON.parse(raw);
     if (saved.date !== today) {
@@ -1038,7 +1030,7 @@
     if (!confirm('Clear all tasks?')) return;
     state = {
       date: today, jawad: [], ubay: [], theme: state.theme, pick: {},
-      pillars: { health: { goal: '', done: false }, mental: { goal: '', done: false }, financial: { goal: '', done: false } }
+      pillars: freshPillars()
     };
     saveState();
     renderPillars();
@@ -1049,24 +1041,17 @@
   function renderPillars() {
     ['health', 'mental', 'financial'].forEach(type => {
       const p = state.pillars[type];
-      const card = document.querySelector(`.pillar[data-type="${type}"]`);
-      const input = document.querySelector(`[data-pillar="${type}"]`);
-      if (input.value !== p.goal) input.value = p.goal;
-      card.classList.toggle('done', p.done);
+      ['jawad', 'ubay'].forEach(person => {
+        const btn = document.querySelector(`.pillar-person-check[data-pillar="${type}"][data-person="${person}"]`);
+        if (btn) btn.classList.toggle('checked', !!p[person]);
+      });
     });
   }
 
-  document.querySelectorAll('.pillar-goal').forEach(input => {
-    input.addEventListener('input', () => {
-      state.pillars[input.dataset.pillar].goal = input.value;
-      saveState();
-    });
-  });
-
-  document.querySelectorAll('.pillar-check').forEach(btn => {
+  document.querySelectorAll('.pillar-person-check').forEach(btn => {
     btn.addEventListener('click', () => {
-      const type = btn.dataset.check;
-      state.pillars[type].done = !state.pillars[type].done;
+      const { pillar, person } = btn.dataset;
+      state.pillars[pillar][person] = !state.pillars[pillar][person];
       saveState();
       renderPillars();
     });
