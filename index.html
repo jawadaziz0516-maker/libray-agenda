@@ -682,6 +682,122 @@
     color: white;
   }
 
+  /* GOALS */
+  .goals-section {
+    margin-bottom: 28px;
+  }
+
+  .goals-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  .goals {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .goals { grid-template-columns: 1fr; }
+  }
+
+  .goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .goal-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-strong);
+  }
+
+  .goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-color, var(--accent)), transparent);
+    opacity: 0.6;
+  }
+
+  .goal-card[data-person="jawad"] { --accent-color: #a6192e; }
+  .goal-card[data-person="ubay"] { --accent-color: #1e40af; }
+
+  [data-theme="dark"] .goal-card[data-person="jawad"] { --accent-color: #e85566; }
+  [data-theme="dark"] .goal-card[data-person="ubay"] { --accent-color: #60a5fa; }
+
+  .goal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .goal-header .initial {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 1.15rem;
+  }
+
+  .goal-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .goal-eyebrow {
+    font-size: 0.66rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+  }
+
+  .goal-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    margin-top: 5px;
+    color: var(--text);
+  }
+
+  .goal-text {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 24;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text);
+    padding: 4px 0 0;
+    min-height: 2.6em;
+    overflow: hidden;
+  }
+
+  .goal-text::placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+    font-weight: 300;
+  }
+
   /* ANIMATIONS */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-6px); }
@@ -717,6 +833,33 @@
       </svg>
     </button>
   </header>
+
+  <div class="goals-section">
+    <div class="goals-label">Monthly goals</div>
+    <div class="goals">
+      <div class="goal-card" data-person="jawad">
+        <div class="goal-header">
+          <div class="initial j">J</div>
+          <div class="goal-meta">
+            <div class="goal-eyebrow">This month</div>
+            <div class="goal-name">Jawad</div>
+          </div>
+        </div>
+        <textarea class="goal-text" data-goal="jawad" rows="2" placeholder="Set a goal for the month"></textarea>
+      </div>
+
+      <div class="goal-card" data-person="ubay">
+        <div class="goal-header">
+          <div class="initial u">U</div>
+          <div class="goal-meta">
+            <div class="goal-eyebrow">This month</div>
+            <div class="goal-name">Ubay</div>
+          </div>
+        </div>
+        <textarea class="goal-text" data-goal="ubay" rows="2" placeholder="Set a goal for the month"></textarea>
+      </div>
+    </div>
+  </div>
 
   <div class="pillars-section">
     <div class="pillars-label">Daily pillars</div>
@@ -860,15 +1003,24 @@
     };
   }
 
+  function freshGoals() {
+    return { jawad: '', ubay: '' };
+  }
+
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars() };
+    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars(), goals: freshGoals() };
     if (!raw) return fresh;
     const saved = JSON.parse(raw);
     if (saved.date !== today) {
-      return { ...fresh, theme: saved.theme || 'light' };
+      return { ...fresh, theme: saved.theme || 'light', goals: { ...freshGoals(), ...(saved.goals || {}) } };
     }
-    return { ...fresh, ...saved, pillars: { ...fresh.pillars, ...(saved.pillars || {}) } };
+    return {
+      ...fresh,
+      ...saved,
+      pillars: { ...fresh.pillars, ...(saved.pillars || {}) },
+      goals: { ...freshGoals(), ...(saved.goals || {}) }
+    };
   }
 
   function saveState() {
@@ -877,7 +1029,7 @@
   }
 
   async function pushToRemote() {
-    const shared = { date: state.date, jawad: state.jawad, ubay: state.ubay, pillars: state.pillars };
+    const shared = { date: state.date, jawad: state.jawad, ubay: state.ubay, pillars: state.pillars, goals: state.goals };
     const { error } = await sb.from('agenda_state').update({ data: shared, updated_at: new Date().toISOString() }).eq('id', 1);
     if (error) console.warn('Supabase write failed', error);
   }
@@ -893,7 +1045,14 @@
   function applyRemote(remote) {
     applyingRemote = true;
     if (remote.date !== today) {
-      state = { ...state, date: today, jawad: [], ubay: [], pillars: freshPillars() };
+      state = {
+        ...state,
+        date: today,
+        jawad: [],
+        ubay: [],
+        pillars: freshPillars(),
+        goals: { ...freshGoals(), ...(remote.goals || {}) }
+      };
       applyingRemote = false;
       pushToRemote();
     } else {
@@ -901,10 +1060,12 @@
       state.jawad = remote.jawad || [];
       state.ubay = remote.ubay || [];
       state.pillars = { ...freshPillars(), ...(remote.pillars || {}) };
+      state.goals = { ...freshGoals(), ...(remote.goals || {}) };
       applyingRemote = false;
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     renderPillars();
+    renderGoals();
     render();
   }
 
@@ -1069,10 +1230,12 @@
     if (!confirm('Clear all tasks?')) return;
     state = {
       date: today, jawad: [], ubay: [], theme: state.theme, pick: {},
-      pillars: freshPillars()
+      pillars: freshPillars(),
+      goals: state.goals
     };
     saveState();
     renderPillars();
+    renderGoals();
     render();
   });
 
@@ -1096,7 +1259,38 @@
     });
   });
 
+  // GOALS
+  function autoResizeGoal(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  }
+
+  function renderGoals() {
+    document.querySelectorAll('[data-goal]').forEach(ta => {
+      const person = ta.dataset.goal;
+      if (document.activeElement === ta) return;
+      ta.value = state.goals[person] || '';
+      autoResizeGoal(ta);
+    });
+  }
+
+  document.querySelectorAll('[data-goal]').forEach(ta => {
+    const person = ta.dataset.goal;
+    ta.addEventListener('input', () => {
+      state.goals[person] = ta.value;
+      autoResizeGoal(ta);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    });
+    ta.addEventListener('blur', () => {
+      state.goals[person] = ta.value.trim();
+      ta.value = state.goals[person];
+      autoResizeGoal(ta);
+      saveState();
+    });
+  });
+
   renderPillars();
+  renderGoals();
   render();
 
   // LIVE SYNC
