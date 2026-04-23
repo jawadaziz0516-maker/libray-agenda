@@ -536,6 +536,246 @@
     color: var(--accent);
   }
 
+  /* MONTHLY GOALS */
+  .monthly-section {
+    margin-bottom: 28px;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  .goals {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 720px) {
+    .goals { grid-template-columns: 1fr; }
+  }
+
+  .goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-color, var(--accent)), transparent);
+    opacity: 0.6;
+  }
+
+  .goal-card[data-person="jawad"] { --accent-color: #a6192e; }
+  .goal-card[data-person="ubay"] { --accent-color: #1e40af; }
+
+  [data-theme="dark"] .goal-card[data-person="jawad"] { --accent-color: #e85566; }
+  [data-theme="dark"] .goal-card[data-person="ubay"] { --accent-color: #60a5fa; }
+
+  .goal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .goal-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+
+  .goal-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .goal-add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-muted);
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    padding: 4px 6px 4px 16px;
+    transition: all 0.2s ease;
+    margin-bottom: 14px;
+  }
+
+  .goal-add:focus-within {
+    background: var(--surface);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .goal-add input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--text);
+    padding: 9px 0;
+  }
+
+  .goal-add input::placeholder {
+    color: var(--text-dim);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .goal-add-btn {
+    background: var(--text);
+    color: var(--surface);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .goal-add-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  .goal-add-btn svg { width: 14px; height: 14px; }
+
+  .goal-list { list-style: none; }
+
+  .goal-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 6px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+
+  .goal-item + .goal-item { border-top: 1px dashed var(--border); }
+
+  .goal-item:hover { background: var(--surface-muted); }
+  .goal-item:hover .goal-delete { opacity: 1; transform: translateX(0); }
+
+  .goal-check {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+
+  .goal-check input {
+    position: absolute;
+    opacity: 0;
+    width: 100%; height: 100%;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .goal-check .box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-strong);
+    border-radius: 7px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .goal-check:hover .box { border-color: var(--accent); }
+
+  .goal-check input:checked + .box {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .goal-check .box svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+
+  .goal-check input:checked + .box svg { opacity: 1; }
+
+  .goal-text {
+    flex: 1;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .goal-item.done .goal-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+    text-decoration-thickness: 1.5px;
+  }
+
+  .goal-delete {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 5px;
+    opacity: 0;
+    transform: translateX(4px);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .goal-delete:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .goal-delete svg { width: 12px; height: 12px; }
+
+  .goal-empty {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    padding: 18px 10px;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+  }
+
   /* PILLARS */
   .pillars-section {
     margin-bottom: 28px;
@@ -718,6 +958,49 @@
     </button>
   </header>
 
+  <div class="monthly-section">
+    <div class="section-label">Monthly goals</div>
+    <div class="goals">
+      <section class="goal-card" data-person="jawad">
+        <div class="goal-header">
+          <div class="initial j">J</div>
+          <div>
+            <div class="goal-eyebrow">This month</div>
+            <h3 class="goal-name">Jawad</h3>
+          </div>
+        </div>
+        <div class="goal-add">
+          <input type="text" placeholder="Set a goal for the month" data-goal-input="jawad">
+          <button class="goal-add-btn" data-goal-add="jawad" title="Add goal">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+          </button>
+        </div>
+        <ul class="goal-list" id="goal-list-jawad"></ul>
+      </section>
+
+      <section class="goal-card" data-person="ubay">
+        <div class="goal-header">
+          <div class="initial u">U</div>
+          <div>
+            <div class="goal-eyebrow">This month</div>
+            <h3 class="goal-name">Ubay</h3>
+          </div>
+        </div>
+        <div class="goal-add">
+          <input type="text" placeholder="Set a goal for the month" data-goal-input="ubay">
+          <button class="goal-add-btn" data-goal-add="ubay" title="Add goal">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+          </button>
+        </div>
+        <ul class="goal-list" id="goal-list-ubay"></ul>
+      </section>
+    </div>
+  </div>
+
   <div class="pillars-section">
     <div class="pillars-label">Daily pillars</div>
     <div class="pillars">
@@ -850,6 +1133,7 @@
 
   const STORAGE_KEY = 'sdsu-library-agenda-v4';
   const today = new Date().toISOString().split('T')[0];
+  const currentMonth = today.slice(0, 7); // "YYYY-MM"
   let applyingRemote = false;
 
   function freshPillars() {
@@ -860,15 +1144,26 @@
     };
   }
 
+  function freshGoals() {
+    return { jawad: [], ubay: [] };
+  }
+
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const fresh = { date: today, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars() };
+    const fresh = { date: today, monthKey: currentMonth, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars(), goals: freshGoals() };
     if (!raw) return fresh;
     const saved = JSON.parse(raw);
+    const keepGoals = saved.monthKey === currentMonth ? (saved.goals || freshGoals()) : freshGoals();
     if (saved.date !== today) {
-      return { ...fresh, theme: saved.theme || 'light' };
+      return { ...fresh, monthKey: currentMonth, goals: { ...freshGoals(), ...keepGoals }, theme: saved.theme || 'light' };
     }
-    return { ...fresh, ...saved, pillars: { ...fresh.pillars, ...(saved.pillars || {}) } };
+    return {
+      ...fresh,
+      ...saved,
+      monthKey: currentMonth,
+      pillars: { ...fresh.pillars, ...(saved.pillars || {}) },
+      goals: { ...fresh.goals, ...keepGoals }
+    };
   }
 
   function saveState() {
@@ -877,7 +1172,14 @@
   }
 
   async function pushToRemote() {
-    const shared = { date: state.date, jawad: state.jawad, ubay: state.ubay, pillars: state.pillars };
+    const shared = {
+      date: state.date,
+      monthKey: state.monthKey,
+      jawad: state.jawad,
+      ubay: state.ubay,
+      pillars: state.pillars,
+      goals: state.goals
+    };
     const { error } = await sb.from('agenda_state').update({ data: shared, updated_at: new Date().toISOString() }).eq('id', 1);
     if (error) console.warn('Supabase write failed', error);
   }
@@ -892,19 +1194,24 @@
 
   function applyRemote(remote) {
     applyingRemote = true;
+    const remoteMonth = remote.monthKey || currentMonth;
+    const keepGoals = remoteMonth === currentMonth ? (remote.goals || freshGoals()) : freshGoals();
     if (remote.date !== today) {
-      state = { ...state, date: today, jawad: [], ubay: [], pillars: freshPillars() };
+      state = { ...state, date: today, monthKey: currentMonth, jawad: [], ubay: [], pillars: freshPillars(), goals: { ...freshGoals(), ...keepGoals } };
       applyingRemote = false;
       pushToRemote();
     } else {
       state.date = remote.date;
+      state.monthKey = currentMonth;
       state.jawad = remote.jawad || [];
       state.ubay = remote.ubay || [];
       state.pillars = { ...freshPillars(), ...(remote.pillars || {}) };
+      state.goals = { ...freshGoals(), ...keepGoals };
       applyingRemote = false;
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     renderPillars();
+    renderGoals();
     render();
   }
 
@@ -1066,14 +1373,87 @@
   });
 
   document.getElementById('resetDay').addEventListener('click', () => {
-    if (!confirm('Clear all tasks?')) return;
+    if (!confirm('Clear all tasks? (Monthly goals stay.)')) return;
     state = {
-      date: today, jawad: [], ubay: [], theme: state.theme, pick: {},
-      pillars: freshPillars()
+      date: today, monthKey: currentMonth,
+      jawad: [], ubay: [], theme: state.theme, pick: {},
+      pillars: freshPillars(),
+      goals: state.goals
     };
     saveState();
     renderPillars();
+    renderGoals();
     render();
+  });
+
+  // MONTHLY GOALS
+  function renderGoals() {
+    ['jawad', 'ubay'].forEach(person => {
+      const list = document.getElementById(`goal-list-${person}`);
+      const goals = state.goals[person] || [];
+      list.innerHTML = '';
+      if (goals.length === 0) {
+        list.innerHTML = '<div class="goal-empty">No goals yet this month</div>';
+        return;
+      }
+      goals.forEach((goal, i) => {
+        const li = document.createElement('li');
+        li.className = 'goal-item' + (goal.done ? ' done' : '');
+        li.innerHTML = `
+          <label class="goal-check">
+            <input type="checkbox" ${goal.done ? 'checked' : ''} data-goal-person="${person}" data-goal-idx="${i}">
+            <span class="box">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+          </label>
+          <div class="goal-text">${escapeHtml(goal.text)}</div>
+          <button class="goal-delete" data-goal-del-person="${person}" data-goal-del-idx="${i}" title="Delete">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        `;
+        list.appendChild(li);
+      });
+    });
+  }
+
+  function addGoal(person) {
+    const input = document.querySelector(`[data-goal-input="${person}"]`);
+    const text = input.value.trim();
+    if (!text) return;
+    state.goals[person].push({ text, done: false, createdAt: Date.now() });
+    input.value = '';
+    saveState();
+    renderGoals();
+  }
+
+  document.querySelectorAll('[data-goal-add]').forEach(btn => {
+    btn.addEventListener('click', () => addGoal(btn.dataset.goalAdd));
+  });
+
+  document.querySelectorAll('[data-goal-input]').forEach(input => {
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') addGoal(input.dataset.goalInput);
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.matches('input[type="checkbox"][data-goal-person]')) {
+      const { goalPerson, goalIdx } = e.target.dataset;
+      state.goals[goalPerson][goalIdx].done = e.target.checked;
+      saveState();
+      renderGoals();
+    }
+    const gDel = e.target.closest('.goal-delete');
+    if (gDel) {
+      const { goalDelPerson, goalDelIdx } = gDel.dataset;
+      state.goals[goalDelPerson].splice(goalDelIdx, 1);
+      saveState();
+      renderGoals();
+    }
   });
 
   // PILLARS
@@ -1097,6 +1477,7 @@
   });
 
   renderPillars();
+  renderGoals();
   render();
 
   // LIVE SYNC
