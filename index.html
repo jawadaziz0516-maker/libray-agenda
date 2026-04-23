@@ -468,7 +468,35 @@
     line-height: 1.45;
     color: var(--text);
     word-break: break-word;
-    cursor: pointer;
+    cursor: text;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 5px;
+    transition: background 0.15s ease;
+  }
+
+  .task-text:hover {
+    background: var(--accent-soft);
+  }
+
+  .task-text.editing,
+  .goal-text.editing {
+    background: var(--surface);
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    cursor: text;
+  }
+
+  .goal-text {
+    cursor: text;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 5px;
+    transition: background 0.15s ease;
+  }
+
+  .goal-text:hover {
+    background: var(--accent-soft);
   }
 
   .task.done .task-text {
@@ -509,6 +537,218 @@
     font-style: italic;
     font-family: 'Fraunces', serif;
     font-weight: 300;
+  }
+
+  /* VISION BOARD */
+  .vision-section {
+    margin-top: 40px;
+  }
+
+  .vision-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .vision-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .vision-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .vision-upload:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .vision-upload svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .vision-upload .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .vision-upload .dot.j { background: #a6192e; }
+  .vision-upload .dot.u { background: #1e40af; }
+  [data-theme="dark"] .vision-upload .dot.j { background: #e85566; }
+  [data-theme="dark"] .vision-upload .dot.u { background: #60a5fa; }
+
+  .vision-grid {
+    column-count: 4;
+    column-gap: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .vision-grid { column-count: 3; }
+  }
+  @media (max-width: 640px) {
+    .vision-grid { column-count: 2; }
+  }
+
+  .vision-item {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface-muted);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    break-inside: avoid;
+    margin-bottom: 14px;
+    cursor: zoom-in;
+  }
+
+  .vision-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .vision-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .vision-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: white;
+    letter-spacing: -0.3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .vision-tag.j { background: linear-gradient(135deg, #c41e3a 0%, #7a0f1e 100%); }
+  .vision-tag.u { background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%); }
+
+  .vision-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+
+  .vision-item:hover .vision-remove {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .vision-remove:hover {
+    background: #dc2626;
+  }
+
+  .vision-remove svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .vision-empty {
+    column-span: all;
+    text-align: center;
+    padding: 48px 20px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    background: var(--surface);
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 18px;
+  }
+
+  /* Lightbox */
+  .vision-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 6, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+
+  .vision-lightbox.active { display: flex; }
+
+  .vision-lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .vision-uploading {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .vision-uploading::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--text-dim);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
   /* FOOTER */
@@ -1118,6 +1358,31 @@
     </section>
   </div>
 
+  <div class="vision-section">
+    <div class="vision-header">
+      <div class="section-label">Vision board</div>
+      <div class="vision-actions" id="visionActions">
+        <label class="vision-upload">
+          <span class="dot j"></span>
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          <span>Jawad</span>
+          <input type="file" accept="image/*" multiple data-vision-upload="jawad" hidden>
+        </label>
+        <label class="vision-upload">
+          <span class="dot u"></span>
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          <span>Ubay</span>
+          <input type="file" accept="image/*" multiple data-vision-upload="ubay" hidden>
+        </label>
+      </div>
+    </div>
+    <div class="vision-grid" id="vision-grid"></div>
+  </div>
+
+  <div class="vision-lightbox" id="visionLightbox">
+    <img src="" alt="" id="visionLightboxImg">
+  </div>
+
   <div class="footer">
     <button id="clearDone">Clear completed</button>
     <button id="resetDay">Reset day</button>
@@ -1150,19 +1415,21 @@
 
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const fresh = { date: today, monthKey: currentMonth, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars(), goals: freshGoals() };
+    const fresh = { date: today, monthKey: currentMonth, jawad: [], ubay: [], theme: 'light', pick: {}, pillars: freshPillars(), goals: freshGoals(), vision: [] };
     if (!raw) return fresh;
     const saved = JSON.parse(raw);
     const keepGoals = saved.monthKey === currentMonth ? (saved.goals || freshGoals()) : freshGoals();
+    const keepVision = Array.isArray(saved.vision) ? saved.vision : [];
     if (saved.date !== today) {
-      return { ...fresh, monthKey: currentMonth, goals: { ...freshGoals(), ...keepGoals }, theme: saved.theme || 'light' };
+      return { ...fresh, monthKey: currentMonth, goals: { ...freshGoals(), ...keepGoals }, vision: keepVision, theme: saved.theme || 'light' };
     }
     return {
       ...fresh,
       ...saved,
       monthKey: currentMonth,
       pillars: { ...fresh.pillars, ...(saved.pillars || {}) },
-      goals: { ...fresh.goals, ...keepGoals }
+      goals: { ...fresh.goals, ...keepGoals },
+      vision: keepVision
     };
   }
 
@@ -1178,7 +1445,8 @@
       jawad: state.jawad,
       ubay: state.ubay,
       pillars: state.pillars,
-      goals: state.goals
+      goals: state.goals,
+      vision: state.vision
     };
     const { error } = await sb.from('agenda_state').update({ data: shared, updated_at: new Date().toISOString() }).eq('id', 1);
     if (error) console.warn('Supabase write failed', error);
@@ -1195,23 +1463,37 @@
   function applyRemote(remote) {
     applyingRemote = true;
     const remoteMonth = remote.monthKey || currentMonth;
-    const keepGoals = remoteMonth === currentMonth ? (remote.goals || freshGoals()) : freshGoals();
     if (remote.date !== today) {
-      state = { ...state, date: today, monthKey: currentMonth, jawad: [], ubay: [], pillars: freshPillars(), goals: { ...freshGoals(), ...keepGoals } };
+      // New day: reset daily stuff but keep goals (if same month) and vision board
+      state = {
+        ...state,
+        date: today,
+        monthKey: currentMonth,
+        jawad: [],
+        ubay: [],
+        pillars: freshPillars()
+      };
+      if (remoteMonth !== currentMonth) state.goals = freshGoals();
       applyingRemote = false;
       pushToRemote();
     } else {
+      // Same day: only overwrite fields that remote actually has, so local
+      // additions aren't wiped by an initial pull that predates them
       state.date = remote.date;
       state.monthKey = currentMonth;
-      state.jawad = remote.jawad || [];
-      state.ubay = remote.ubay || [];
-      state.pillars = { ...freshPillars(), ...(remote.pillars || {}) };
-      state.goals = { ...freshGoals(), ...keepGoals };
+      if (Array.isArray(remote.jawad)) state.jawad = remote.jawad;
+      if (Array.isArray(remote.ubay)) state.ubay = remote.ubay;
+      if (remote.pillars) state.pillars = { ...freshPillars(), ...remote.pillars };
+      if (remote.goals && remoteMonth === currentMonth) {
+        state.goals = { ...freshGoals(), ...remote.goals };
+      }
+      if (Array.isArray(remote.vision)) state.vision = remote.vision;
       applyingRemote = false;
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     renderPillars();
     renderGoals();
+    renderVision();
     render();
   }
 
@@ -1278,7 +1560,7 @@
             </label>
             <div class="task-body">
               ${dot}
-              <div class="task-text">${escapeHtml(task.text)}</div>
+              <div class="task-text" data-edit-kind="task" data-edit-person="${person}" data-edit-idx="${task._i}" title="Click to edit">${escapeHtml(task.text)}</div>
             </div>
             <button class="task-delete" data-person="${person}" data-idx="${task._i}" title="Delete">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1373,17 +1655,199 @@
   });
 
   document.getElementById('resetDay').addEventListener('click', () => {
-    if (!confirm('Clear all tasks? (Monthly goals stay.)')) return;
+    if (!confirm('Clear today\'s tasks? (Monthly goals and vision board stay.)')) return;
     state = {
       date: today, monthKey: currentMonth,
       jawad: [], ubay: [], theme: state.theme, pick: {},
       pillars: freshPillars(),
-      goals: state.goals
+      goals: state.goals,
+      vision: state.vision
     };
     saveState();
     renderPillars();
     renderGoals();
+    renderVision();
     render();
+  });
+
+  // INLINE EDIT (tasks + goals)
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-edit-kind]');
+    if (!el || el.dataset.editing) return;
+    const kind = el.dataset.editKind;
+    const person = el.dataset.editPerson;
+    const idx = Number(el.dataset.editIdx);
+    const arr = kind === 'task' ? state[person] : state.goals[person];
+    if (!arr || !arr[idx]) return;
+    startInlineEdit(el, arr[idx], () => {
+      saveState();
+      if (kind === 'task') render();
+      else renderGoals();
+    });
+  });
+
+  function startInlineEdit(el, item, onSave) {
+    el.dataset.editing = '1';
+    el.contentEditable = 'true';
+    el.classList.add('editing');
+    const original = item.text;
+    // select all
+    requestAnimationFrame(() => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      el.focus();
+    });
+    const finish = (save) => {
+      el.removeEventListener('blur', onBlur);
+      el.removeEventListener('keydown', onKey);
+      el.contentEditable = 'false';
+      el.classList.remove('editing');
+      delete el.dataset.editing;
+      if (save) {
+        const next = el.textContent.trim();
+        if (next && next !== original) {
+          item.text = next;
+          onSave();
+          return;
+        }
+      }
+      el.textContent = original;
+    };
+    const onBlur = () => finish(true);
+    const onKey = e => {
+      if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); el.textContent = original; el.blur(); }
+    };
+    el.addEventListener('blur', onBlur);
+    el.addEventListener('keydown', onKey);
+  }
+
+  // VISION BOARD
+  function fileToCompressedDataUrl(file, maxDim = 1200, quality = 0.82) {
+    return new Promise((resolve) => {
+      if (!file || !file.type.startsWith('image/')) { resolve(null); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          let { width, height } = img;
+          const ratio = Math.min(1, maxDim / Math.max(width, height));
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => resolve(null);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleVisionFiles(person, fileList) {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+    const actions = document.getElementById('visionActions');
+    const spinner = document.createElement('span');
+    spinner.className = 'vision-uploading';
+    spinner.textContent = files.length > 1 ? `Adding ${files.length} images…` : 'Adding image…';
+    actions.appendChild(spinner);
+    try {
+      for (const file of files) {
+        const dataUrl = await fileToCompressedDataUrl(file);
+        if (!dataUrl) continue;
+        state.vision.push({
+          id: `v_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          person,
+          dataUrl,
+          createdAt: Date.now()
+        });
+        renderVision();
+      }
+      saveState();
+    } finally {
+      spinner.remove();
+    }
+  }
+
+  function renderVision() {
+    const grid = document.getElementById('vision-grid');
+    if (!grid) return;
+    const items = Array.isArray(state.vision) ? state.vision : [];
+    grid.innerHTML = '';
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="vision-empty">Upload images of what you\'re building toward</div>';
+      return;
+    }
+    // newest first
+    const sorted = [...items].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    sorted.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'vision-item';
+      const tag = item.person === 'jawad' ? 'j' : 'u';
+      const tagText = item.person === 'jawad' ? 'J' : 'U';
+      div.innerHTML = `
+        <img src="${item.dataUrl}" alt="" loading="lazy" data-vision-open="${item.id}">
+        <div class="vision-tag ${tag}" title="${item.person === 'jawad' ? 'Jawad' : 'Ubay'}">${tagText}</div>
+        <button class="vision-remove" data-vision-remove="${item.id}" title="Remove">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  document.querySelectorAll('[data-vision-upload]').forEach(input => {
+    input.addEventListener('change', e => {
+      handleVisionFiles(input.dataset.visionUpload, e.target.files);
+      input.value = '';
+    });
+  });
+
+  document.addEventListener('click', e => {
+    const rm = e.target.closest('.vision-remove');
+    if (rm) {
+      e.stopPropagation();
+      if (!confirm('Remove this image?')) return;
+      state.vision = state.vision.filter(v => v.id !== rm.dataset.visionRemove);
+      saveState();
+      renderVision();
+      return;
+    }
+    const open = e.target.closest('[data-vision-open]');
+    if (open) {
+      const item = state.vision.find(v => v.id === open.dataset.visionOpen);
+      if (item) {
+        const lb = document.getElementById('visionLightbox');
+        document.getElementById('visionLightboxImg').src = item.dataUrl;
+        lb.classList.add('active');
+      }
+    }
+  });
+
+  document.getElementById('visionLightbox').addEventListener('click', e => {
+    e.currentTarget.classList.remove('active');
+    document.getElementById('visionLightboxImg').src = '';
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const lb = document.getElementById('visionLightbox');
+      if (lb.classList.contains('active')) {
+        lb.classList.remove('active');
+        document.getElementById('visionLightboxImg').src = '';
+      }
+    }
   });
 
   // MONTHLY GOALS
@@ -1408,7 +1872,7 @@
               </svg>
             </span>
           </label>
-          <div class="goal-text">${escapeHtml(goal.text)}</div>
+          <div class="goal-text" data-edit-kind="goal" data-edit-person="${person}" data-edit-idx="${i}" title="Click to edit">${escapeHtml(goal.text)}</div>
           <button class="goal-delete" data-goal-del-person="${person}" data-goal-del-idx="${i}" title="Delete">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -1478,6 +1942,7 @@
 
   renderPillars();
   renderGoals();
+  renderVision();
   render();
 
   // LIVE SYNC
